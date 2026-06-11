@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "vJST42mdzhwBfbcrQdSQM"
+uri = "file://artifacts/emble-website/public/hero-bg.png"
+type = "image"
+title = "Cinematic studio lighting stage"
+
+[[generated]]
+id = "2XGfF9PEugQ-51bXe1sbM"
+uri = "file://artifacts/emble-website/public/fashion.png"
+type = "image"
+title = "High fashion runway model"
+
+[[generated]]
+id = "Gx1EmuweMeGwWiHkm1Lgc"
+uri = "file://artifacts/emble-website/public/photography.png"
+type = "image"
+title = "Professional photography camera gear"
+
+[[generated]]
+id = "rZ5QRQxFRNjhUk8edlF7E"
+uri = "file://artifacts/emble-website/public/videography.png"
+type = "image"
+title = "Cinema camera rig silhouette"
+
+[[generated]]
+id = "yEx9_nDJQcYIQcZiYWxkw"
+uri = "file://artifacts/emble-website/public/modeling.png"
+type = "image"
+title = "Model portrait silhouette"

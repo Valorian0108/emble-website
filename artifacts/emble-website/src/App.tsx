@@ -165,8 +165,8 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
                     WhatsApp has opened with your application pre-filled. Just tap <strong className="text-foreground">Send</strong> to deliver it to ECA.
                   </p>
                   <p className="text-xs text-muted-foreground mb-8">
-                    If WhatsApp didn't open, contact us directly at<br />
-                    <span className="text-primary font-medium">+234 916 578 5355</span>
+                    If WhatsApp didn't open, tap to chat with us directly:<br />
+                    <a href="https://wa.me/2349165785355" target="_blank" rel="noreferrer" className="text-primary font-medium hover:underline">+234 916 578 5355</a>
                   </p>
                   <button
                     onClick={handleClose}
@@ -721,8 +721,8 @@ const Admissions = ({ onApply }: { onApply: () => void }) => {
             <div className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-primary" />
               <div className="text-left text-sm">
-                <p className="font-medium">+234 805 657 1284</p>
-                <p className="font-medium">+234 916 578 5355</p>
+                <a href="https://wa.me/2348056571284" target="_blank" rel="noreferrer" className="font-medium block hover:text-primary transition-colors">+234 805 657 1284</a>
+                <a href="https://wa.me/2349165785355" target="_blank" rel="noreferrer" className="font-medium block hover:text-primary transition-colors">+234 916 578 5355</a>
               </div>
             </div>
             <div className="hidden sm:block w-[1px] h-10 bg-border" />

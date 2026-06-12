@@ -2,7 +2,7 @@ services:
   - type: web
     name: emble-creative-academy
     runtime: static
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/emble-website run build
+    buildCommand: npx --yes pnpm@10.26.1 install --frozen-lockfile && npx pnpm@10.26.1 --filter @workspace/emble-website run build
     staticPublishPath: artifacts/emble-website/dist/public
     pullRequestPreviewsEnabled: false
     routes:

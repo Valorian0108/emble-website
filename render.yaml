@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: emble-creative-academy
+    runtime: static
+    buildCommand: npm install -g pnpm && pnpm install --frozen-lockfile && pnpm --filter @workspace/emble-website run build
+    staticPublishPath: artifacts/emble-website/dist/public
+    pullRequestPreviewsEnabled: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

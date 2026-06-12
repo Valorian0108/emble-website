@@ -51,6 +51,8 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
   const [form, setForm] = useState<ApplyFormData>(defaultForm);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Partial<ApplyFormData>>({});
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState<string | null>(null);
 
   useEffect(() => {
     if (open) {
@@ -71,7 +73,7 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length > 0) {
@@ -79,21 +81,28 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
       return;
     }
 
-    const message = encodeURIComponent(
-      `*NEW APPLICATION — EMBLE CREATIVE ACADEMY*\n\n` +
-      `*Full Name:*        ${form.fullName}\n` +
-      `*Phone Number:*     ${form.phone}\n` +
-      `*Nickname:*         ${form.nickname || "—"}\n` +
-      `*Age:*              ${form.age}\n` +
-      `*Height:*           ${form.height || "—"}\n` +
-      `*Weight:*           ${form.weight || "—"}\n` +
-      `*Gender:*           ${form.gender}\n` +
-      `*Program Interest:* ${form.program}\n\n` +
-      `_Submitted via emblecreativeacademy.com_`
-    );
+    setSending(true);
+    setSendError(null);
 
-    window.open(`https://wa.me/2348056571284?text=${message}`, "_blank");
-    setSubmitted(true);
+    try {
+      const res = await fetch("/api/apply", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setSendError(data.error || "Something went wrong. Please try again.");
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setSendError("Could not connect. Please check your internet and try again.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const handleChange = (field: keyof ApplyFormData, value: string) => {
@@ -105,6 +114,8 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
     setForm(defaultForm);
     setErrors({});
     setSubmitted(false);
+    setSending(false);
+    setSendError(null);
     onClose();
   };
 
@@ -155,13 +166,13 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
                   <div className="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-serif mb-3 text-foreground">WhatsApp Ready</h3>
+                  <h3 className="text-2xl font-serif mb-3 text-foreground">Application Sent!</h3>
                   <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
-                    WhatsApp has opened with your application details pre-filled. Just hit <strong className="text-foreground">Send</strong> to submit it to ECA.
+                    Your application has been delivered directly to ECA via WhatsApp. We will be in touch with you soon.
                   </p>
                   <p className="text-xs text-muted-foreground mb-8">
-                    If WhatsApp didn't open, you can contact us directly at<br />
-                    <span className="text-primary font-medium">+234 805 657 1284</span>
+                    Questions? Reach us at<br />
+                    <span className="text-primary font-medium">+234 916 578 5355</span>
                   </p>
                   <button
                     onClick={handleClose}
@@ -312,15 +323,31 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
 
                   {/* Submit */}
                   <div className="pt-4">
+                    {sendError && (
+                      <p className="text-red-400 text-xs text-center mb-3 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2">
+                        {sendError}
+                      </p>
+                    )}
                     <button
                       type="submit"
                       data-testid="button-submit-application"
-                      className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full text-sm font-semibold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(201,162,39,0.2)] hover:shadow-[0_0_30px_rgba(201,162,39,0.4)]"
+                      disabled={sending}
+                      className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full text-sm font-semibold hover:bg-primary/90 transition-all shadow-[0_0_20px_rgba(201,162,39,0.2)] hover:shadow-[0_0_30px_rgba(201,162,39,0.4)] disabled:opacity-60 disabled:cursor-not-allowed"
                     >
-                      Submit Application <Send className="w-4 h-4" />
+                      {sending ? (
+                        <>
+                          <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                          </svg>
+                          Sending...
+                        </>
+                      ) : (
+                        <>Submit Application <Send className="w-4 h-4" /></>
+                      )}
                     </button>
                     <p className="text-center text-xs text-muted-foreground mt-3">
-                      This will open your email app to send your application directly to ECA.
+                      Your details will be sent directly to ECA via WhatsApp.
                     </p>
                   </div>
                 </form>

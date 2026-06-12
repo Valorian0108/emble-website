@@ -79,23 +79,20 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
       return;
     }
 
-    const subject = encodeURIComponent(`ECA Application — ${form.fullName} (${form.program})`);
-    const body = encodeURIComponent(
-      `NEW APPLICATION — EMBLE CREATIVE ACADEMY\n` +
-      `==========================================\n\n` +
-      `Full Name:        ${form.fullName}\n` +
-      `Phone Number:     ${form.phone}\n` +
-      `Nickname:         ${form.nickname || "—"}\n` +
-      `Age:              ${form.age}\n` +
-      `Height:           ${form.height || "—"}\n` +
-      `Weight:           ${form.weight || "—"}\n` +
-      `Gender:           ${form.gender}\n` +
-      `Program Interest: ${form.program}\n\n` +
-      `==========================================\n` +
-      `Submitted via emblecreativeacademy.com`
+    const message = encodeURIComponent(
+      `*NEW APPLICATION — EMBLE CREATIVE ACADEMY*\n\n` +
+      `*Full Name:*        ${form.fullName}\n` +
+      `*Phone Number:*     ${form.phone}\n` +
+      `*Nickname:*         ${form.nickname || "—"}\n` +
+      `*Age:*              ${form.age}\n` +
+      `*Height:*           ${form.height || "—"}\n` +
+      `*Weight:*           ${form.weight || "—"}\n` +
+      `*Gender:*           ${form.gender}\n` +
+      `*Program Interest:* ${form.program}\n\n` +
+      `_Submitted via emblecreativeacademy.com_`
     );
 
-    window.location.href = `mailto:ifeoluwaoludemi34@gmail.com?subject=${subject}&body=${body}`;
+    window.open(`https://wa.me/2348056571284?text=${message}`, "_blank");
     setSubmitted(true);
   };
 
@@ -158,13 +155,13 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
                   <div className="w-16 h-16 rounded-full border-2 border-primary flex items-center justify-center mx-auto mb-6">
                     <CheckCircle2 className="w-8 h-8 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-serif mb-3 text-foreground">Application Ready</h3>
+                  <h3 className="text-2xl font-serif mb-3 text-foreground">WhatsApp Ready</h3>
                   <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
-                    Your email client has opened with your application details. Just hit <strong className="text-foreground">Send</strong> to submit it to ECA.
+                    WhatsApp has opened with your application details pre-filled. Just hit <strong className="text-foreground">Send</strong> to submit it to ECA.
                   </p>
                   <p className="text-xs text-muted-foreground mb-8">
-                    If your email didn't open, you can contact us directly at<br />
-                    <span className="text-primary font-medium">ifeoluwaoludemi34@gmail.com</span>
+                    If WhatsApp didn't open, you can contact us directly at<br />
+                    <span className="text-primary font-medium">+234 805 657 1284</span>
                   </p>
                   <button
                     onClick={handleClose}

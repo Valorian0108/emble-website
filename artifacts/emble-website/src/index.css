@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -107,8 +107,8 @@
   --sidebar-accent-foreground: 45 10% 92%;
   --sidebar-ring: 46 65% 53%;
 
-  --app-font-sans: 'Inter', sans-serif;
-  --app-font-serif: 'Playfair Display', serif;
+  --app-font-sans: 'Outfit', sans-serif;
+  --app-font-serif: 'Cormorant Garamond', serif;
   --app-font-mono: Menlo, monospace;
   --radius: 0.5rem;
 

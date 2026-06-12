@@ -33,7 +33,7 @@ type ApplyFormData = {
   height: string;
   weight: string;
   gender: string;
-  program: string;
+  program: string[];
 };
 
 const defaultForm: ApplyFormData = {
@@ -44,13 +44,13 @@ const defaultForm: ApplyFormData = {
   height: "",
   weight: "",
   gender: "",
-  program: ""
+  program: []
 };
 
 const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const [form, setForm] = useState<ApplyFormData>(defaultForm);
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState<Partial<ApplyFormData>>({});
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [sending, setSending] = useState(false);
 
   useEffect(() => {
@@ -63,12 +63,12 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
   }, [open]);
 
   const validate = () => {
-    const newErrors: Partial<ApplyFormData> = {};
+    const newErrors: Record<string, string> = {};
     if (!form.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!form.phone.trim()) newErrors.phone = "Phone number is required";
     if (!form.age.trim()) newErrors.age = "Age is required";
     if (!form.gender) newErrors.gender = "Please select a gender";
-    if (!form.program) newErrors.program = "Please select a program";
+    if (form.program.length === 0) newErrors.program = "Please select at least one program";
     return newErrors;
   };
 
@@ -91,7 +91,7 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
       `*Height:*           ${form.height || "—"}\n` +
       `*Weight:*           ${form.weight || "—"}\n` +
       `*Gender:*           ${form.gender}\n` +
-      `*Program Interest:* ${form.program}\n\n` +
+      `*Program Interest:* ${form.program.join(", ")}\n\n` +
       `_Submitted via Emble Creative Academy website_`
     );
 
@@ -102,7 +102,18 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
 
   const handleChange = (field: keyof ApplyFormData, value: string) => {
     setForm(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors(prev => ({ ...prev, [field]: undefined }));
+    if (errors[field]) setErrors(prev => { const next = { ...prev }; delete next[field]; return next; });
+  };
+
+  const handleProgramToggle = (prog: string) => {
+    setForm(prev => {
+      const current = prev.program;
+      const updated = current.includes(prog)
+        ? current.filter(p => p !== prog)
+        : [...current, prog];
+      return { ...prev, program: updated };
+    });
+    if (errors.program) setErrors(prev => { const next = { ...prev }; delete next.program; return next; });
   };
 
   const handleClose = () => {
@@ -298,21 +309,35 @@ const ApplyModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
                       Program Interest <span className="text-primary">*</span>
+                      <span className="ml-2 normal-case font-normal text-muted-foreground/60">(select all that apply)</span>
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {PROGRAMS.map(prog => (
-                        <button
-                          key={prog}
-                          type="button"
-                          data-testid={`button-program-${prog.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`}
-                          onClick={() => handleChange("program", prog)}
-                          className={`px-4 py-2 rounded-full text-xs font-semibold border transition-all ${form.program === prog ? "bg-primary text-primary-foreground border-primary shadow-[0_0_12px_rgba(201,162,39,0.3)]" : "bg-white/5 border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}
-                        >
-                          {prog}
-                        </button>
-                      ))}
+                      {PROGRAMS.map(prog => {
+                        const selected = form.program.includes(prog);
+                        return (
+                          <button
+                            key={prog}
+                            type="button"
+                            data-testid={`button-program-${prog.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "")}`}
+                            onClick={() => handleProgramToggle(prog)}
+                            className={`px-4 py-2 rounded-full text-xs font-semibold border transition-all flex items-center gap-1.5 ${selected ? "bg-primary text-primary-foreground border-primary shadow-[0_0_12px_rgba(201,162,39,0.3)]" : "bg-white/5 border-border text-muted-foreground hover:border-primary/40 hover:text-foreground"}`}
+                          >
+                            {selected && (
+                              <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 12 12" fill="none">
+                                <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            )}
+                            {prog}
+                          </button>
+                        );
+                      })}
                     </div>
-                    {errors.program && <p className="text-red-400 text-xs mt-2">{errors.program}</p>}
+                    {form.program.length > 0 && (
+                      <p className="text-xs text-primary/70 mt-2">
+                        Selected: {form.program.join(" · ")}
+                      </p>
+                    )}
+                    {errors.program && <p className="text-red-400 text-xs mt-1">{errors.program}</p>}
                   </div>
 
                   {/* Submit */}

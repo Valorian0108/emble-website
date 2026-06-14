@@ -544,6 +544,73 @@ const About = () => {
   );
 };
 
+const Founders = () => {
+  const founders = [
+    {
+      image: "/founder-1.jpg",
+      name: "Founder Name",
+      role: "Creative Director & Co-founder",
+      bio: "A visionary creative with a passion for visual storytelling and developing raw talent across Nigeria.",
+    },
+    {
+      image: "/founder-2.jpg",
+      name: "Founder Name",
+      role: "Co-founder & Lead Instructor",
+      bio: "An industry professional dedicated to breaking down barriers and making world-class creative education accessible.",
+    },
+  ];
+
+  return (
+    <section className="py-24 md:py-32 bg-secondary/20 border-t border-border/50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,162,39,0.04)_0%,transparent_70%)] pointer-events-none" />
+      <div className="container mx-auto px-6 md:px-12">
+        <motion.div
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}
+          className="text-center mb-16"
+        >
+          <motion.p variants={fadeUp} className="text-primary text-xs font-semibold uppercase tracking-[0.3em] mb-4">The People Behind ECA</motion.p>
+          <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-serif">
+            Meet the <span className="text-primary italic">Visionaries</span>
+          </motion.h2>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
+          {founders.map((founder, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.7, delay: i * 0.15 }}
+              className="group"
+            >
+              <div className="relative aspect-[3/4] rounded-lg overflow-hidden mb-6">
+                <img
+                  src={founder.image}
+                  alt={founder.name}
+                  className="object-cover object-top w-full h-full transition-transform duration-700 group-hover:scale-105"
+                  style={{ filter: "grayscale(30%) brightness(0.75) contrast(1.15) saturate(0.8)" }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-primary/10 mix-blend-overlay opacity-60 group-hover:opacity-30 transition-opacity duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="w-8 h-[1px] bg-primary mb-3" />
+                  <h3 className="font-serif text-xl text-white font-medium">{founder.name}</h3>
+                  <p className="text-primary text-xs font-semibold uppercase tracking-wider mt-1">{founder.role}</p>
+                </div>
+                <div className="absolute top-4 right-4 w-12 h-12 border border-primary/30 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                  <div className="w-4 h-4 border-t border-r border-primary rotate-45" />
+                </div>
+              </div>
+              <p className="text-muted-foreground text-sm leading-relaxed px-1">{founder.bio}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Programs = ({ onApply }: { onApply: () => void }) => {
   const programs = [
     {
@@ -811,6 +878,7 @@ export default function App() {
       <Navbar onApply={() => setApplyOpen(true)} />
       <Hero onApply={() => setApplyOpen(true)} />
       <About />
+      <Founders />
       <Programs onApply={() => setApplyOpen(true)} />
       <WhyECA onApply={() => setApplyOpen(true)} />
       <Admissions onApply={() => setApplyOpen(true)} />

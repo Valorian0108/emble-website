@@ -548,15 +548,15 @@ const Founders = () => {
   const founders = [
     {
       image: "/founder-1.jpg",
-      name: "Founder Name",
+      name: "EmDee",
       role: "Creative Director & Co-founder",
-      bio: "A visionary creative with a passion for visual storytelling and developing raw talent across Nigeria.",
+      bio: "A visionary creative with a relentless passion for visual storytelling, EmDee built ECA to give every talented Nigerian the stage they deserve.",
     },
     {
       image: "/founder-2.jpg",
-      name: "Founder Name",
+      name: "Blehandsome",
       role: "Co-founder & Lead Instructor",
-      bio: "An industry professional dedicated to breaking down barriers and making world-class creative education accessible.",
+      bio: "Industry-seasoned and purpose-driven, Blehandsome leads ECA's training with a mission to make world-class creative education free and accessible to all.",
     },
   ];
 
